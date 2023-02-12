@@ -75,14 +75,6 @@
 
       const pb = new PocketBase("https://bukan-rubem.pockethost.io");
 
-      const dummyDate = new Date().toLocaleDateString(undefined, {
-        hour: "2-digit",
-        minute: "2-digit",
-        year: "numeric",
-        month: "long",
-        day: "numeric",
-      });
-
       function createCard(desc, date) {
         const card = document.createElement("article");
         card.setAttribute(
@@ -104,7 +96,16 @@
           "class",
           "text-gray-700 dark:text-gray-400 text-right"
         );
-        dateContainer.textContent = date;
+        dateContainer.textContent = new Date(date).toLocaleDateString(
+          undefined,
+          {
+            hour: "2-digit",
+            minute: "2-digit",
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+          }
+        );
         dateWrapper.appendChild(dateContainer);
 
         card.appendChild(descContainer);
