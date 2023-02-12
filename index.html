@@ -70,7 +70,11 @@
       </footer>
     </div>
 
-    <script>
+    <script type="module">
+      import PocketBase from "./node_modules/pocketbase/dist/pocketbase.es.js";
+
+      const pb = new PocketBase("https://bukan-rubem.pockethost.io");
+
       const dummyDate = new Date().toLocaleDateString(undefined, {
         hour: "2-digit",
         minute: "2-digit",
@@ -113,18 +117,20 @@
         const url = "https://jsonplaceholder.typicode.com/posts";
 
         try {
-          const response = await fetch(url);
-          const data = await response.json();
+          const data = await pb
+            .collection("posts")
+            .getFullList(200, { sort: "-created" });
+
+          console.log(data);
 
           const contentContainer = document.getElementById("content-container");
 
-          const useData = data.slice(95);
-          useData.forEach((d) => {
-            const card = createCard(d.body, dummyDate);
+          data.forEach(({ description, created }) => {
+            const card = createCard(description, created);
             contentContainer.appendChild(card);
           });
         } catch (error) {
-          console.log(error);
+          console.error(error);
         }
       }
 
